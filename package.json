@@ -1,0 +1,15 @@
+{
+  "name": "messages-desktop",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Desktop app for Google Messages for Web, built on Tauri and WebView2",
+  "scripts": {
+    "tauri": "tauri",
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "icons": "tauri icon src-tauri/icons/app-icon.png"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.12.6"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Messages Desktop",
+  "version": "0.1.0",
+  "identifier": "io.github.kodakjackson.messagesdesktop",
+  "build": {
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "withGlobalTauri": false,
+    "windows": [],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["nsis"],
+    "publisher": "Messages Desktop",
+    "shortDescription": "Google Messages for Web on your desktop",
+    "longDescription": "A maintained desktop app for Google Messages for Web with tray, native notifications and automatic updates.",
+    "category": "SocialNetworking",
+    "createUpdaterArtifacts": true,
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "webviewInstallMode": { "type": "downloadBootstrapper", "silent": true },
+      "nsis": {
+        "installMode": "currentUser",
+        "installerIcon": "icons/icon.ico"
+      }
+    }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDQzRDZGNUFCOUUwNDIxNUEKUldSYUlRU2VxL1hXUTJ5amFBVHUxdXZkc0NrQmVNQWxvZmkxbDh1eGdzdEdzL000cUJsMHJxYzMK",
+      "endpoints": [
+        "https://github.com/kodakjackson/Google-Messages-Desktop/releases/latest/download/latest.json"
+      ],
+      "windows": {
+        "installMode": "passive"
+      }
+    }
+  }
+}
