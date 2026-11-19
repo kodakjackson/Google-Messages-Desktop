@@ -1,7 +1,5 @@
 # Messages Desktop
-Unofficial desktop client for Google Messages
-A small, maintained Windows desktop app for [Google Messages for Web](https://messages.google.com/web).
-It replaces the abandoned Electron wrapper (stuck on Electron 19, no updates since 2023).
+Unofficial desktop client for Google Messages.  A small, maintained Windows desktop app for [Google Messages for Web](https://messages.google.com/web).  It replaces the abandoned Electron wrapper (stuck on Electron 19, no updates since 2023).
 
 Not affiliated with Google.
 
