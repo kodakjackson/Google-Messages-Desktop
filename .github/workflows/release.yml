@@ -1,10 +1,12 @@
 name: Release
 
-# Push a tag like v0.2.0 to build the Windows installer, sign the update
-# package and publish a GitHub Release. Installed copies pick it up automatically.
+# Bumping the version in src-tauri/tauri.conf.json on main builds the Windows
+# installer, signs the update package and publishes a GitHub Release tagged
+# v<version>. Installed copies pick it up automatically.
 on:
   push:
-    tags: ["v*"]
+    branches: [main]
+    paths: ["src-tauri/tauri.conf.json", ".github/workflows/release.yml"]
   workflow_dispatch:
 
 permissions:
@@ -14,29 +16,48 @@ jobs:
   release:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - name: Skip if this version is already released
+        id: version
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          version=$(node -p "require('./src-tauri/tauri.conf.json').version")
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
+          if gh release view "v$version" >/dev/null 2>&1; then
+            echo "v$version is already released; nothing to do."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-node@v5
+        if: steps.version.outputs.skip != 'true'
         with:
           node-version: 22
           cache: npm
 
       - uses: dtolnay/rust-toolchain@stable
+        if: steps.version.outputs.skip != 'true'
 
       - uses: swatinem/rust-cache@v2
+        if: steps.version.outputs.skip != 'true'
         with:
           workspaces: src-tauri -> target
 
       - run: npm ci
+        if: steps.version.outputs.skip != 'true'
 
       - uses: tauri-apps/tauri-action@v0
+        if: steps.version.outputs.skip != 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ""
         with:
-          tagName: ${{ github.ref_name }}
-          releaseName: Messages Desktop ${{ github.ref_name }}
+          tagName: ${{ steps.version.outputs.tag }}
+          releaseName: Messages Desktop ${{ steps.version.outputs.tag }}
+          commitish: ${{ github.sha }}
           releaseBody: See the commits since the last release for what changed.
           releaseDraft: false
           prerelease: false

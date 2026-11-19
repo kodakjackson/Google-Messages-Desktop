@@ -43,9 +43,9 @@ npm run build    # build the installer into src-tauri\target\release\bundle\nsis
 ## Releasing
 
 1. Bump `version` in `src-tauri/tauri.conf.json`, `src-tauri/Cargo.toml` and `package.json`.
-2. Commit, then tag and push: `git tag v0.2.0 && git push origin v0.2.0`.
-3. The **Release** workflow builds the installer, signs the update package and publishes the release
-   with `latest.json`. Installed copies update within a few hours, or right away from
+2. Commit and push to `main`.
+3. The **Release** workflow sees the new version, builds the installer, signs the update package and
+   publishes release `v<version>` with `latest.json`. (It can also be run by hand from the Actions tab.) Installed copies update within a few hours, or right away from
    tray menu > **Check for updates**.
 
 The workflow needs the repository secret `TAURI_SIGNING_PRIVATE_KEY` (the update signing key). The matching
