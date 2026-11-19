@@ -57,7 +57,7 @@ jobs:
         with:
           tagName: ${{ steps.version.outputs.tag }}
           releaseName: Messages Desktop ${{ steps.version.outputs.tag }}
-          commitish: ${{ github.sha }}
+          releaseCommitish: ${{ github.sha }}
           releaseBody: See the commits since the last release for what changed.
           releaseDraft: false
           prerelease: false
